@@ -13,17 +13,16 @@ export default function Form(props){
   }
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
+          <select className="methods">
+            <option value="GET" id="get">GET</option>
+            <option value="POST" id="post">POST</option>
+            <option value="PUT" id="put">PUT</option>
+            <option value="DELETE" id="delete">DELETE</option>
+          </select>
           <label >
-            <span>URL: </span>
-            <input name='url' type='text' />
+            <input name='url' type='text' placeholder="https://google.com" />
             <button type="submit">GO!</button>
-          </label>
-          <label className="methods">
-            <span id="get">GET</span>
-            <span id="post">POST</span>
-            <span id="put">PUT</span>
-            <span id="delete">DELETE</span>
           </label>
         </form>
       </>

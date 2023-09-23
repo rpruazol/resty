@@ -2,13 +2,13 @@ $backgroundColor: #efefef;
 $radius: 40%;
 
 form {
-  display: inline-block;
+  display: flex;
   margin: auto;
   width: 200px;
 
   label {
     display: flex;
-    margin: 1rem 0;
+    margin: .5rem 1;
 
     &.methods {
       span {
@@ -22,5 +22,8 @@ form {
         }
       }
     }
+  }
+  span {
+    margin-right: .85rem;
   }
 }
