@@ -6,15 +6,16 @@ export default function Form(props){
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      method:'GET',
+      method: e.target.method.value,
       url: 'https://pokeapi.co/api/v2/pokemon',
     };
+    console.log(formData)
     props.handleApiCall(formData);
   }
     return (
       <>
         <form onSubmit={handleSubmit} >
-          <select className="methods">
+          <select className="methods" name="method">
             <option value="GET" id="get">GET</option>
             <option value="POST" id="post">POST</option>
             <option value="PUT" id="put">PUT</option>
