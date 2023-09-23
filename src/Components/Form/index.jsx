@@ -1,37 +1,31 @@
-import React from 'react';
 
 import './Form.scss';
 
-class Form extends React.Component {
+export default function Form(props){
 
-  handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
-      method:'GET',
+      method: e.target.method.value,
       url: 'https://pokeapi.co/api/v2/pokemon',
     };
-    this.props.handleApiCall(formData);
+    console.log(formData)
+    props.handleApiCall(formData);
   }
-
-  render() {
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleSubmit} >
+          <select className="methods" name="method">
+            <option value="GET" id="get">GET</option>
+            <option value="POST" id="post">POST</option>
+            <option value="PUT" id="put">PUT</option>
+            <option value="DELETE" id="delete">DELETE</option>
+          </select>
           <label >
-            <span>URL: </span>
-            <input name='url' type='text' />
+            <input name='url' type='text' placeholder="https://google.com" />
             <button type="submit">GO!</button>
-          </label>
-          <label className="methods">
-            <span id="get">GET</span>
-            <span id="post">POST</span>
-            <span id="put">PUT</span>
-            <span id="delete">DELETE</span>
           </label>
         </form>
       </>
     );
-  }
-}
-
-export default Form;
+};
