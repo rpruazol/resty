@@ -1,15 +1,18 @@
 
+import { useState } from 'react';
 import './Form.scss';
 
 export default function Form(props){
+
+  const [url, setUrl] = useState("");
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
       method: e.target.method.value,
-      url: 'https://pokeapi.co/api/v2/pokemon',
+      url: url,
     };
-    console.log(formData)
     props.handleApiCall(formData);
   }
     return (
@@ -22,7 +25,7 @@ export default function Form(props){
             <option value="DELETE" id="delete">DELETE</option>
           </select>
           <label >
-            <input name='url' type='text' placeholder="https://google.com" />
+            <input name='url' type='text' placeholder="https://google.com" onChange={(e) => setUrl(e.target.value)} />
             <button type="submit">GO!</button>
           </label>
         </form>
