@@ -12,6 +12,7 @@ import Form from './Components/Form';
 import Results from './Components/Results';
 import { useState } from 'react';
 
+
 function App(props){
 
   const [data, setData] = useState(null);
@@ -26,13 +27,22 @@ function App(props){
   //   };
   // }
 
-  const callApi = (requestParams) => {
+  const callApi = async (requestParams) => {
     // mock output
+
+    const params = {
+      method: requestParams.method
+    }
+    const response = await (await fetch(requestParams.url, params)).json()
+    
+    console.log(response)
+
     const data = {
       count: 2,
       results: [
         {method: requestParams.method},
         {name: 'fake thing 1', url: requestParams.url},
+        {data: response}
       ],
     };
     // this.setState({data, requestParams});
