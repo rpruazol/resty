@@ -4,40 +4,41 @@ import './Form.scss';
 
 export default function Form(props){
 
-  const [url, setUrl] = useState("");
-  const [method, setMethod] = useState(false);
-
+  // const [url, setUrl] = useState("");
+  // const [method, setMethod] = useState(false);
+  const [formData, setFormData] = useState({
+    method: "GET",
+    url: null,
+    data: null
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      method: e.target.method.value,
-      url: url,
-    };
-    props.handleApiCall(formData);
+    console.log('formData', formData)
+
+    props.setRequestData(formData);
   }
 
-  const handleMethod = (method) => {
-    setMethod({method: method})
-    console.log(method)
-  }
-  console.log(method)
+  // const handleMethod = (method) => {
+  //   setMethod({method: method})
+  //   console.log(method)
+  // }
 
     return (
       <>
         <form onSubmit={handleSubmit} >
-          <select className="methods" name="method" onChange={(e) => handleMethod(e.target.value)}>
+          <select className="methods" name="method" onChange={(e) => setFormData({...formData, method: e.target.value})}>
             <option value="GET" id="get">GET</option>
             <option value="POST" id="post">POST</option>
             <option value="PUT" id="put">PUT</option>
             <option value="DELETE" id="delete">DELETE</option>
           </select>
           <label >
-            <input name='url' type='text' placeholder="https://google.com" onChange={(e) => setUrl(e.target.value)} />
+            <input name='url' type='text' placeholder="https://google.com" onChange={(e) => setFormData({...formData, url: e.target.value})} />
             <button type="submit">GO!</button>
           </label>
             <textarea name="body" id="" cols="30" rows="10" style={{
-              visibility: ['POST', 'PUT'].includes(method.method) ? "visible" : "hidden" }}>
+              visibility: ['POST', 'PUT'].includes(formData.method) ? "visible" : "hidden" }}>
               </textarea>
         </form>
       </>
