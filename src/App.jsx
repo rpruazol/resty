@@ -53,12 +53,14 @@ function App(props){
     return (
       <React.Fragment>
         <Header />
-        <div class="request">
-          <p>Request Method: {requestParams.method}</p>
-          <p>URL: {requestParams.url}</p>
+        <div class="main">
+          <div class="request">
+            <p>Request Method: {requestParams.method}</p>
+            <p>URL: {requestParams.url}</p>
+          <Form handleApiCall={callApi} />
+          </div>
+          <Results data={data} />
         </div>
-        <Results data={data} />
-        <Form handleApiCall={callApi} />
         <Footer />
       </React.Fragment>
     );

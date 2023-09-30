@@ -1,13 +1,28 @@
 
+
 p {
   text-align: center;
-  width: 50%;
-  margin: auto;
+  width: 100%;
+  // margin: auto;
 }
 
-pre {
-  text-align: center;
-  background-color: rgb(241, 241, 241);
+.response {
+  background-color: rgb(216, 218, 250);
+  border-left: 1em solid rgba(241, 241, 241, 0.468);
+  width: 100%;
+  overflow-wrap: break-word;
+
+}
+
+div > pre {
+  border: .10rem solid rgb(187, 189, 228);
+  text-align: left;
+  overflow-y: scroll;
+  overflow-x: visible;
+  overflow-wrap: break-word;
+  margin-left: 5%;
+  width: 90%;
+  height: 670px;
 }
 
 

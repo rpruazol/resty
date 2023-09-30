@@ -2,11 +2,13 @@ import './Results.scss';
 
 export default function Results(props) {
     return (
-      <section>
+      <div className='response'>
         <p>
         Response
         </p>
-        <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
-      </section>
+        <div id="response-body">
+          <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
+        </div>
+      </div>
     );
 };
