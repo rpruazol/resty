@@ -17,31 +17,33 @@ const reducer = (state, action) => {
     case 'submit':
       return {...state, method: action.payload.method, url: action.payload.url}
     case 'api':
-      return {...state, data: action.payload.data}
+      return {
+        ...state, 
+        data: action.payload.data, 
+        history: [
+          ...state.history, 
+          {
+            method: state.method,
+            url: state.url,
+            data: action.payload.data
+          }
+        ]}
     default:
       throw Error('something went wrong')
-  } 
   }
+}
 
 function App(props) {
-  // const [data, setData] = useState({
-  //   method: null,
-  //   url: null,
-  //   data: null,
-  // });
-
+  // const [history, dispatch] = useReducer(historyReducer, []);
   const [data, dispatch] = useReducer(reducer, {
       method: null,
       url: null,
       data: null,
-    })
+      history: []
+    });
 console.log('initial state', data)
-  useEffect(() => {
-    // functionally we will still make the API call when we hit the button, but for the lab clicking the button will trigger useEffect instead of callApi
 
-    // console.log(data)
-    // if(!data.data) return;
-    // if(data.data && Object.keys(data.data).length) return;
+  useEffect(() => {
     (async () => {
       console.log('state changed!')
       const params = {
@@ -51,6 +53,7 @@ console.log('initial state', data)
       const response = await (await fetch(data.url, params)).json();
       console.log('response ', response)
       setApiResponse(response);
+      console.log('history', data.history)
     })();
   }, [data.url]);
 
@@ -87,6 +90,17 @@ console.log('initial state', data)
         </div>
         <Results data={data} />
       </div>
+        <div>
+          <h1>history</h1>
+          {
+              <pre>
+                {JSON.stringify(data, (key, val) => {
+                  console.log(data)
+                  if (key === 'history') {return val}}, 2)
+                  }
+              </pre>
+          }
+        </div>
       <Footer />
     </React.Fragment>
   );
