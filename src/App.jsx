@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-
+import {useReducer} from 'react';
 import "./App.scss";
 
 // Let's talk about using index.js and some other name in the component folder.
@@ -12,12 +12,28 @@ import Form from "./Components/Form";
 import Results from "./Components/Results";
 import { useState } from "react";
 
+const reducer = (state, action) => {
+  if(action.type === 'submit'){
+    console.log('state', state)
+    console.log('action', action.payload)
+    return {...state, method: action.payload.method, url: action.payload.url}
+  } else {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+
 function App(props) {
-  const [data, setData] = useState({
-    method: null,
-    url: null,
-    data: null,
-  });
+  // const [data, setData] = useState({
+  //   method: null,
+  //   url: null,
+  //   data: null,
+  // });
+
+  const [data, dispatch] = useReducer(reducer, {
+      method: null,
+      url: null,
+      data: null,
+    })
 console.log('initial state', data)
   useEffect(() => {
     // functionally we will still make the API call when we hit the button, but for the lab clicking the button will trigger useEffect instead of callApi
@@ -41,32 +57,19 @@ console.log('initial state', data)
           { data: response },
         ],
       };
-      setData(newData);
-      console.log(newData);
+      setRequestData(newData);
     })();
   }, [data.url]);
 
   const setRequestData = (requestData) => {
-    setData(requestData);
-    console.log("data", data);
-  };
-
-  const callApi = async (requestParams) => {
-    // const params = {
-    //   method: requestParams.method
-    // }
-    // const response = await (await fetch(requestParams.url, params)).json()
-    // console.log(response)
-    // const data = {
-    //   count: 2,
-    //   results: [
-    //     {method: requestParams.method},
-    //     {url: requestParams.url},
-    //     {data: response}
-    //   ],
-    // };
-    // setData(data);
-    // setRequestParams(requestParams);
+    console.log("data", requestData);
+    dispatch({
+      type: 'submit',
+      payload: {
+        method: requestData.method,
+        url: requestData.url
+      }
+    })
   };
 
   return (
@@ -84,5 +87,7 @@ console.log('initial state', data)
     </React.Fragment>
   );
 }
+
+
 
 export default App;
