@@ -13,13 +13,14 @@ import Results from "./Components/Results";
 import { useState } from "react";
 
 const reducer = (state, action) => {
-  if(action.type === 'submit'){
-    console.log('state', state)
-    console.log('action', action.payload)
-    return {...state, method: action.payload.method, url: action.payload.url}
-  } else {
-      throw Error('Unknown action: ' + action.type);
-    }
+  switch(action.type){
+    case 'submit':
+      return {...state, method: action.payload.method, url: action.payload.url}
+    case 'api':
+      return {...state, data: action.payload.data}
+    default:
+      throw Error('something went wrong')
+  } 
   }
 
 function App(props) {
@@ -48,29 +49,32 @@ console.log('initial state', data)
       };
       console.log("params", params);
       const response = await (await fetch(data.url, params)).json();
-
-      const newData = {
-        count: 2,
-        results: [
-          { method: data.method },
-          { url: data.url },
-          { data: response },
-        ],
-      };
-      setRequestData(newData);
+      console.log('response ', response)
+      setApiResponse(response);
     })();
   }, [data.url]);
 
   const setRequestData = (requestData) => {
-    console.log("data", requestData);
+    console.log("submit", requestData);
     dispatch({
       type: 'submit',
       payload: {
         method: requestData.method,
-        url: requestData.url
+        url: requestData.url,
+        data: requestData
       }
     })
   };
+
+  const setApiResponse = (data) => {
+    console.log("api", data);
+    dispatch({
+      type: 'api',
+      payload: {
+        data: data
+      }
+    })
+  }
 
   return (
     <React.Fragment>
