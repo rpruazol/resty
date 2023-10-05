@@ -10,6 +10,7 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Form from "./Components/Form";
 import Results from "./Components/Results";
+import History from "./Components/History";
 import { useState } from "react";
 
 const reducer = (state, action) => {
@@ -90,17 +91,7 @@ console.log('initial state', data)
         </div>
         <Results data={data} />
       </div>
-        <div>
-          <h1>history</h1>
-          {
-              <pre>
-                {JSON.stringify(data, (key, val) => {
-                  console.log(data)
-                  if (key === 'history') {return val}}, 2)
-                  }
-              </pre>
-          }
-        </div>
+      <History historyArray={data.history} />
       <Footer />
     </React.Fragment>
   );

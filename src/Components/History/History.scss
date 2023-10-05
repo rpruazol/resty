@@ -6,7 +6,7 @@ p {
   // margin: auto;
 }
 
-.response {
+.history {
   background-color: rgb(216, 218, 250);
   border-left: 1em solid rgba(241, 241, 241, 0.468);
   width: 100%;
@@ -14,7 +14,7 @@ p {
 
 }
 
-#response-body > pre {
+#history-body > pre {
   border: .10rem solid rgb(187, 189, 228);
   text-align: left;
   overflow-y: scroll;
