@@ -1,67 +1,102 @@
-import React from 'react';
-
-import './App.scss';
+import React, { useEffect } from "react";
+import {useReducer} from 'react';
+import "./App.scss";
 
 // Let's talk about using index.js and some other name in the component folder.
 // There's pros and cons for each way of doing this...
-// OFFICIALLY, we have chosen to use the Airbnb style guide naming convention. 
+// OFFICIALLY, we have chosen to use the Airbnb style guide naming convention.
 // Why is this source of truth beneficial when spread across a global organization?
-import Header from './Components/Header';
-import Footer from './Components/Footer';
-import Form from './Components/Form';
-import Results from './Components/Results';
-import { useState } from 'react';
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Form from "./Components/Form";
+import Results from "./Components/Results";
+import History from "./Components/History";
+import { useState } from "react";
 
+const reducer = (state, action) => {
+  switch(action.type){
+    case 'submit':
+      return {...state, method: action.payload.method, url: action.payload.url}
+    case 'api':
+      return {
+        ...state, 
+        data: action.payload.data, 
+        history: [
+          ...state.history, 
+          {
+            method: state.method,
+            url: state.url,
+            data: action.payload.data
+          }
+        ]}
+    default:
+      throw Error('something went wrong')
+  }
+}
 
-function App(props){
+function App(props) {
+  // const [history, dispatch] = useReducer(historyReducer, []);
+  const [data, dispatch] = useReducer(reducer, {
+      method: null,
+      url: null,
+      data: null,
+      history: []
+    });
+console.log('initial state', data)
 
-  const [data, setData] = useState(null);
-  const [requestParams, setRequestParams] = useState({});
+  useEffect(() => {
+    (async () => {
+      console.log('state changed!')
+      const params = {
+        method: data.method,
+      };
+      console.log("params", params);
+      const response = await (await fetch(data.url, params)).json();
+      console.log('response ', response)
+      setApiResponse(response);
+      console.log('history', data.history)
+    })();
+  }, [data.url]);
 
+  const setRequestData = (requestData) => {
+    console.log("submit", requestData);
+    dispatch({
+      type: 'submit',
+      payload: {
+        method: requestData.method,
+        url: requestData.url,
+        data: requestData
+      }
+    })
+  };
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     data: null,
-  //     requestParams: {},
-  //   };
-  // }
-
-  const callApi = async (requestParams) => {
-    // mock output
-
-    const params = {
-      method: requestParams.method
-    }
-    const response = await (await fetch(requestParams.url, params)).json()
-    
-    console.log(response)
-
-    const data = {
-      count: 2,
-      results: [
-        {method: requestParams.method},
-        {name: 'fake thing 1', url: requestParams.url},
-        {data: response}
-      ],
-    };
-    // this.setState({data, requestParams});
-    setData(data);
-    setRequestParams(requestParams);
+  const setApiResponse = (data) => {
+    console.log("api", data);
+    dispatch({
+      type: 'api',
+      payload: {
+        data: data
+      }
+    })
   }
 
-    return (
-      <React.Fragment>
-        <Header />
+  return (
+    <React.Fragment>
+      <Header />
+      <div class="main">
         <div class="request">
-          <p>Request Method: {requestParams.method}</p>
-          <p>URL: {requestParams.url}</p>
+          {/* <p>Request Method: {requestParams.method}</p>
+            <p>URL: {requestParams.url}</p> */}
+          <Form setRequestData={setRequestData} />
         </div>
         <Results data={data} />
-        <Form handleApiCall={callApi} />
-        <Footer />
-      </React.Fragment>
-    );
+      </div>
+      <History historyArray={data.history} />
+      <Footer />
+    </React.Fragment>
+  );
 }
+
+
 
 export default App;

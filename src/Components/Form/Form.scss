@@ -3,6 +3,7 @@ $radius: 40%;
 
 form {
   display: flex;
+  flex-direction: column;
   margin: auto;
   width: 200px;
 
@@ -25,5 +26,8 @@ form {
   }
   span {
     margin-right: .85rem;
+  }
+  textarea{
+    display: block;
   }
 }
